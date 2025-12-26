@@ -95,4 +95,39 @@ fun DetailSiswaScreen(
     }
 }
 
-}
+@Composable
+private fun BodyDetailDataSiswa(
+    statusUiDetail: StatusUIDetail,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+
+        when (statusUiDetail) {
+            is StatusUIDetail.Loading -> {
+                Text("Loading...")
+            }
+            is StatusUIDetail.Error -> {
+                Text("Error loading data")
+            }
+            is StatusUIDetail.Success -> {
+                DetailDataSiswa(
+                    siswa = statusUiDetail.satusiswa,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedButton(
+                    onClick = { deleteConfirmationRequired = true },
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.delete))
+                }
+            }
+        }
+
+        }
